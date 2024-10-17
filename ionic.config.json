@@ -1,0 +1,7 @@
+{
+  "name": "ChromaConnect",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
