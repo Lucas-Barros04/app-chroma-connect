@@ -1,12 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { LoadingController, ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilidadesService {
 
-  constructor(private toast: ToastController) { }
+  constructor(private toast: ToastController, private router: Router) { }
   loadingCTRL = inject(LoadingController)
 
   loading(){
@@ -23,5 +24,10 @@ export class UtilidadesService {
       icon: 'alert-circle-outline'
     })
     toast.present();
+  }
+
+  routerLink(ruta: string){
+    return this.router.navigateByUrl(ruta);
+
   }
 }

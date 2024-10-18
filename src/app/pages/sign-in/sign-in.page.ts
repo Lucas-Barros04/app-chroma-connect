@@ -25,11 +25,15 @@ export class SignInPage implements OnInit {
 
     this.fireBaseService.signIn(this.form.value as User).then(res=> {
       console.log(res)
+      this.utilidadesService.routerLink('/main')
     }).catch(error => {
-      this.utilidadesService.presentToast('ocurrio un error' + error, 'danger')
+      this.utilidadesService.presentToast('Tu correo o contraseña estan erroneos', 'danger')
     }).finally(() => {
       loading.dismiss();
     })
     }
+  }catch(error:string){
+    this.utilidadesService.presentToast('Complete todos los campos','danger')
+    console.log(error);
   }
 }
