@@ -1,13 +1,17 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>profile</ion-title>
+    <ion-title routerLink="/main">Usuario</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <img src="https://github.com/Lucas-Barros04.png" alt="" style="border-radius: 50%; width: 20%;">
+  <div style="display: inline-block; margin: 0 0 0 30%;">
+    <p>post ?</p>
+    <p>Seguidores ?</p>
+    <p>Siguiendo ?</p>
+  </div>
+  <p style="margin-top: 2%;">Nombre apellido</p>
+  <p>Bios:</p>
+  <ion-button expand="block">Editar perfil</ion-button>
+  <app-menu></app-menu>
 </ion-content>
