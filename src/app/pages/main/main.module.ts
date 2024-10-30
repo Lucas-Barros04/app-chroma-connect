@@ -8,6 +8,9 @@ import { MainPageRoutingModule } from './main-routing.module';
 
 import { MainPage } from './main.page';
 import { SharingModule } from './sharing/sharing.module';
+import { HttpClientModule } from '@angular/common/http';
+import { ApiServiceService } from './api-service.service';
+import { ApiMemesComponent } from './sharing/componentes/api-memes/api-memes.component';
 
 @NgModule({
   imports: [
@@ -16,8 +19,11 @@ import { SharingModule } from './sharing/sharing.module';
     IonicModule,
     MainPageRoutingModule,
     SharingModule,
-    MainPageRoutingModule
+    MainPageRoutingModule,
+    HttpClientModule,
+    
   ],
-  declarations: [MainPage]
+  declarations: [MainPage, ApiMemesComponent],
+  providers: [ApiServiceService]
 })
 export class MainPageModule {}

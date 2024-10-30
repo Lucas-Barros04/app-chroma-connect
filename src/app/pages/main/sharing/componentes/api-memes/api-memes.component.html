@@ -1,0 +1,11 @@
+@for (meme of memes; track meme.id) {
+  <ion-card>
+    <img alt="meme" src="{{meme.url}}" />
+    <ion-card-header>
+      <ion-card-title>{{meme.name}}</ion-card-title>
+      <ion-card-subtitle></ion-card-subtitle>
+    </ion-card-header>
+    <ion-button fill="clear"><ion-icon name="heart-outline"></ion-icon></ion-button>
+    <ion-button fill="clear"><ion-icon name="heart-dislike-outline"></ion-icon></ion-button>
+  </ion-card>
+}
