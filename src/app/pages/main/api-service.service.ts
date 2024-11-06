@@ -10,6 +10,12 @@ interface Meme {
   box_count: number
   captions: number
 }
+interface memes{
+  succes: boolean,
+  data: {
+    Meme:Meme[]
+  }
+}
 
 
 @Injectable({
@@ -20,7 +26,7 @@ export class ApiServiceService {
   private url: string = 'https://api.imgflip.com/get_memes'
   constructor(private http: HttpClient) { }
 
-  obtenerMemes():Observable<Meme[]> {
-    return this.http.get<Meme[]>(this.url);
+  obtenerMemes():Observable<memes[]> {
+    return this.http.get<memes[]>(this.url);
   }
 }

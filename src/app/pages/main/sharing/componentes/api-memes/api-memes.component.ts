@@ -17,7 +17,7 @@ export class ApiMemesComponent  implements OnInit {
       this.memes = _obtenerLocalMemes
       console.log('Usando datos locales')
     }else{
-      this.apiMeme.obtenerMemes().subscribe((response:any)=>{
+      this.apiMeme.obtenerMemes().subscribe((response: any)=>{
         this.memes = response.data.memes
         console.log('Usando la api memes')
         localStorage.setItem('memes', JSON.stringify(this.memes))

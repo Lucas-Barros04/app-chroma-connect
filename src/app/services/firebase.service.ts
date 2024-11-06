@@ -22,4 +22,8 @@ export class FirebaseService {
   signUp(user: User){
     return createUserWithEmailAndPassword(getAuth(), user.email, user.password);
   }
+
+
+  //==================dataBase===================
+  
 }
