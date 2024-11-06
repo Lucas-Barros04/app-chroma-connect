@@ -25,7 +25,7 @@ export class SignInPage implements OnInit {
 
     this.fireBaseService.signIn(this.form.value as User).then(res=> {
       console.log(res)
-      this.utilidadesService.routerLink('/main')
+      this.getUserInfo(res.user.uid)
     }).catch(error => {
       this.utilidadesService.presentToast('Tu correo o contraseña estan erroneos', 'danger')
     }).finally(() => {
@@ -35,5 +35,35 @@ export class SignInPage implements OnInit {
   }catch(error:string){
     this.utilidadesService.presentToast('Complete todos los campos','danger')
     console.log(error);
+  }
+
+  async getUserInfo(uid: string) {
+    if (this.form.valid) {
+      const loading = await this.utilidadesService.loading();
+      await loading.present();
+
+      let path = `users/${uid}`;
+
+      this.fireBaseService
+        .getDocument(path)
+        .then((user: User) => {
+          this.utilidadesService.saveLocalStorage('user', user);
+          this.utilidadesService.routerLink('/main');
+          this.form.reset;
+          this.utilidadesService.presentToast(
+            `Bienvenido ${user.name}`,
+            'danger'
+          );
+        })
+        .catch((error) => {
+          this.utilidadesService.presentToast(
+            'Ocurrios un error al crear el usuario: ' + error,
+            'danger'
+          );
+        })
+        .finally(() => {
+          loading.dismiss();
+        });
+    }
   }
 }

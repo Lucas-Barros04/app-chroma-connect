@@ -11,4 +11,5 @@ export class HeaderComponent  implements OnInit {
 
   ngOnInit() {}
   @Input() title!: string;
+  @Input() backButton!: string;
 }

@@ -30,4 +30,12 @@ export class UtilidadesService {
     return this.router.navigateByUrl(ruta);
 
   }
+
+  saveLocalStorage(key: string, value: any){
+    return localStorage.setItem(key, JSON.stringify(value))
+  }
+
+  getLocalStorage(key: string, value: any){
+    return JSON.parse( localStorage.getItem(key));
+  }
 }
