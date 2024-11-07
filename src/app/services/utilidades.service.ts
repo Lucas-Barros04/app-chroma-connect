@@ -15,13 +15,13 @@ export class UtilidadesService {
   }
    //=================toast===========
 
-   async presentToast(mensaje: string, color : string) {
+   async presentToast(mensaje: string, color : string, position: any, icon: string) {
     const toast = await this.toast.create({
       message: mensaje,
       duration: 2500,
       color: color,
-      position: 'middle',
-      icon: 'alert-circle-outline'
+      position: position,
+      icon: icon
     })
     toast.present();
   }

@@ -27,13 +27,23 @@ export class SignInPage implements OnInit {
       console.log(res)
       this.getUserInfo(res.user.uid)
     }).catch(error => {
-      this.utilidadesService.presentToast('Tu correo o contraseña estan erroneos', 'danger')
+      this.utilidadesService.presentToast(
+        'Tu correo o contraseña estan erroneos', 
+        'danger',
+        'midle',
+        'alert-circle-outline'
+      )
     }).finally(() => {
       loading.dismiss();
     })
     }
   }catch(error:string){
-    this.utilidadesService.presentToast('Complete todos los campos','danger')
+    this.utilidadesService.presentToast(
+      'Complete todos los campos',
+      'danger',
+      'midle',
+      'alert-circle-outline'
+    )
     console.log(error);
   }
 
@@ -52,13 +62,17 @@ export class SignInPage implements OnInit {
           this.form.reset;
           this.utilidadesService.presentToast(
             `Bienvenido ${user.name}`,
-            'danger'
+            'primary',
+            'midle',
+            'person-outline'
           );
         })
         .catch((error) => {
           this.utilidadesService.presentToast(
             'Ocurrios un error al crear el usuario: ' + error,
-            'danger'
+            'danger',
+            'midle',
+            'alert-circle-outline'
           );
         })
         .finally(() => {
