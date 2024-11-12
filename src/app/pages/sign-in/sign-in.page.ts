@@ -30,7 +30,6 @@ export class SignInPage implements OnInit {
       this.utilidadesService.presentToast(
         'Tu correo o contraseña estan erroneos', 
         'danger',
-        'midle',
         'alert-circle-outline'
       )
     }).finally(() => {
@@ -41,7 +40,6 @@ export class SignInPage implements OnInit {
     this.utilidadesService.presentToast(
       'Complete todos los campos',
       'danger',
-      'midle',
       'alert-circle-outline'
     )
     console.log(error);
@@ -59,11 +57,10 @@ export class SignInPage implements OnInit {
         .then((user: User) => {
           this.utilidadesService.saveLocalStorage('user', user);
           this.utilidadesService.routerLink('/main');
-          this.form.reset;
+          this.form.reset();
           this.utilidadesService.presentToast(
             `Bienvenido ${user.name}`,
             'primary',
-            'midle',
             'person-outline'
           );
         })
@@ -71,7 +68,6 @@ export class SignInPage implements OnInit {
           this.utilidadesService.presentToast(
             'Ocurrios un error al crear el usuario: ' + error,
             'danger',
-            'midle',
             'alert-circle-outline'
           );
         })

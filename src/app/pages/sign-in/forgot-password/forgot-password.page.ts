@@ -27,14 +27,18 @@ export class ForgotPasswordPage implements OnInit {
       this.fireBaseService
         .sendRecoveryEmail(this.form.value.email)
         .then((res) => {
-          console.log(res);
-          this.form.reset
+          this.utilidadesService.presentToast(
+            'Correo enviado',
+            'primary',
+            'mail-outline'
+          );
+          this.form.reset();
+          this.utilidadesService.routerLink('/sign-in');
         })
         .catch((error) => {
           this.utilidadesService.presentToast(
-            'Tu correo o contraseña estan erroneos',
+            'este correo no existe' + error.message,
             'danger',
-            'midle',
             'alert-circle-outline'
           );
         })
@@ -42,14 +46,5 @@ export class ForgotPasswordPage implements OnInit {
           loading.dismiss();
         });
     }
-  }
-  catch(error: string) {
-    this.utilidadesService.presentToast(
-      'Complete todos los campos',
-      'danger',
-      'midle',
-      'alert-circle-outline'
-    );
-    console.log(error);
   }
 }

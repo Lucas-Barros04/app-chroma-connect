@@ -1,10 +1,32 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title routerLink="/main">Usuario</ion-title>
+    <ion-title routerLink="/main">{{nombreUsuario}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
-  <img src="https://github.com/Lucas-Barros04.png" alt="" style="border-radius: 50%; width: 20%;">
+
+<ion-menu side="end" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Opciones</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item button routerLink="/main">Inicio</ion-item>
+      <ion-item button (click)="signOut()">Cerrar sesión</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-content id="main-content" class="ion-padding">
+  <img
+    src="https://github.com/Lucas-Barros04.png"
+    alt=""
+    style="border-radius: 50%; width: 20%;"
+  />
   <div style="display: inline-block; margin: 0 0 0 30%;">
     <p>post ?</p>
     <p>Seguidores ?</p>

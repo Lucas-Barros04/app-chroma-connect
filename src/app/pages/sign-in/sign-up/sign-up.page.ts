@@ -53,7 +53,6 @@ export class SignUpPage implements OnInit {
           this.utilidadesService.presentToast(
             'Ocurrios un error al crear el usuario: ' + error,
             'danger',
-            'midle',
             'alert-circle-outline'
           );
         })
@@ -82,7 +81,6 @@ export class SignUpPage implements OnInit {
           this.utilidadesService.presentToast(
             'Ocurrios un error al crear el usuario: ' + error,
             'danger',
-            'midle',
             'alert-circle-outline'
           );
         })
