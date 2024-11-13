@@ -1,0 +1,25 @@
+.d-flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.validators {
+    color: red;
+    font-size: 13px;
+    text-align: center;
+}
+
+.icon-image{
+    
+    font-size: 100px;
+    opacity: 30%;
+}
+    
+
+
+ion-avatar{
+    width: 100px;
+    height: 100px;
+    --border-radius: 15%;
+    margin: 0 auto;
+}

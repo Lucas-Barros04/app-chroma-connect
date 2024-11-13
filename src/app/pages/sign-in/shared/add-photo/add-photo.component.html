@@ -1,0 +1,48 @@
+<app-header [isModal]="true" title="Subir foto"></app-header>
+<ion-content>
+  <div class="d-flex-center">
+    <form [formGroup]="form" class="ion-padding ion-text-center" (ngSubmit)="submit()" >
+
+      <!--=========================NAME===========================-->
+      <app-input icon="person-outline" 
+      type="text" 
+      [control]="form.controls.name" 
+      label="Titulo"
+      ></app-input>
+      <div class="validators" *ngIf="form.controls.name.errors && form.controls.name.touched">
+        <div *ngIf="form.controls.name.errors?.['required']">El titulo es requerido</div>
+        <div *ngIf="form.controls.name.errors?.['minLength']">Ingrese un titulo con al menos 1 caracteres</div>
+      </div>
+
+      <!--=========================descripcion===========================-->
+      <app-input icon="book-outline" 
+      type="text"
+      [control]="form.controls.descripcion" 
+      label="Descripción"
+      ></app-input>
+      <div class="validators" *ngIf="form.controls.descripcion.errors && form.controls.descripcion.touched">
+        <div *ngIf="form.controls.descripcion.errors?.['required']">La descripcion es requerida</div>
+        <div *ngIf="form.controls.descripcion.errors?.['maxLength']">Máximo 10 caracteres</div>
+      </div>
+
+      <ion-avatar *ngIf="form.value.imagen">
+        <img [src]="form.value.imagen" />
+      </ion-avatar>
+
+
+      
+      <ion-icon class="icon-image" *ngIf="!form.value.imagen" name="image-outline"></ion-icon>
+      
+
+      <ion-tab-button spand="block" (click)="takeImg()">
+        <ion-icon name="camera"></ion-icon>
+        <ion-label>Foto</ion-label>
+      </ion-tab-button>
+
+      <ion-button expand="block" type="submit" shape="round" class="submit" [disabled]="form.invalid">
+        Subir
+      </ion-button>
+
+    </form>
+  </div>
+</ion-content>

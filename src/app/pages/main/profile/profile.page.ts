@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
+import { AddPhotoComponent } from '../../sign-in/shared/add-photo/add-photo.component';
 
 @Component({
   selector: 'app-profile',
@@ -10,7 +12,7 @@ export class ProfilePage implements OnInit {
 
   nombreUsuario: string = '';
 
-  constructor(private fireBase: FirebaseService) { }
+  constructor(private fireBase: FirebaseService, private utilService: UtilidadesService) { }
 
   ngOnInit() {
     const usuarioString = localStorage.getItem('user');
@@ -24,6 +26,13 @@ export class ProfilePage implements OnInit {
   signOut(){
     this.fireBase.signOut();
     localStorage.removeItem('user')
+  }
+
+  //subir fotos
+  uploadPhotos(){
+    this.utilService.presentModal({
+      component: AddPhotoComponent
+    })
   }
 
   

@@ -7,7 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { ProfilePageRoutingModule } from './profile-routing.module';
 
 import { ProfilePage } from './profile.page';
-import { SharingModule } from '../sharing/sharing.module';
+
+import { SharedModule } from '../../sign-in/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,7 @@ import { SharingModule } from '../sharing/sharing.module';
     FormsModule,
     IonicModule,
     ProfilePageRoutingModule,
-    SharingModule
+    SharedModule
   ],
   declarations: [ProfilePage]
 })
