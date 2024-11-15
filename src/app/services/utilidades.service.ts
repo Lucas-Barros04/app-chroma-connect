@@ -52,7 +52,7 @@ export class UtilidadesService {
     return localStorage.setItem(key, JSON.stringify(value))
   }
 
-  getLocalStorage(key: string, value: any){
+  getLocalStorage(key: string ){ //dentro de este parentesis quite algo
     return JSON.parse( localStorage.getItem(key));
   }
 

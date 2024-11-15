@@ -3,8 +3,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail} from 'firebase/auth'
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { User } from '../models/user.models';
-import {getFirestore, setDoc, doc, getDoc} from '@angular/fire/firestore'
+import {getFirestore, setDoc, doc, getDoc, addDoc, collection} from '@angular/fire/firestore'
 import { UtilidadesService } from 'src/app/services/utilidades.service';
+import {AngularFireStorage} from '@angular/fire/compat/storage';
+import {getStorage, uploadString, ref, getDownloadURL} from 'firebase/storage'
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,8 @@ export class FirebaseService {
   firestore = inject(AngularFirestore);
 
   utilService = inject(UtilidadesService)
+
+  storage = inject(AngularFireStorage)
 
   //=======autenticacion
 
@@ -52,5 +56,15 @@ export class FirebaseService {
   
   async getDocument(paht: string){
     return (await (getDoc(doc(getFirestore(), paht)))).data();
+  }
+
+  addDocument(paht: string, data: any){
+    return addDoc(collection(getFirestore(),paht), data);
+  }
+
+  async uploadImg(path: string, data_url: string){
+    return uploadString(ref(getStorage(), path), data_url, 'data_url').then(()=>{
+      return getDownloadURL(ref(getStorage(),path))
+    })
   }
 }
