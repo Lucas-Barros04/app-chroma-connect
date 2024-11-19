@@ -76,7 +76,7 @@ export class AddPhotoComponent implements OnInit {
         .finally(() => {
           loading.dismiss();
         });
-      // ahora hay que mandar todo esto a firebase
+      
     }
   }
 }
