@@ -3,10 +3,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail} from 'firebase/auth'
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { User } from '../models/user.models';
-import {getFirestore, setDoc, doc, getDoc, addDoc, collection, collectionData, query} from '@angular/fire/firestore'
+import {getFirestore, setDoc, doc, getDoc, addDoc, collection, collectionData, query, updateDoc, deleteDoc} from '@angular/fire/firestore'
 import { UtilidadesService } from 'src/app/services/utilidades.service';
 import {AngularFireStorage} from '@angular/fire/compat/storage';
-import {getStorage, uploadString, ref, getDownloadURL} from 'firebase/storage'
+import {getStorage, uploadString, ref, getDownloadURL, deleteObject} from 'firebase/storage'
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +53,14 @@ export class FirebaseService {
   setDocument(paht: string, data: any){
     return setDoc(doc(getFirestore(),paht), data);
   }
+
+  updateDocument(paht: string, data: any){
+    return updateDoc(doc(getFirestore(),paht), data);
+  }
+
+  deleteDocument(paht: string){
+    return deleteDoc(doc(getFirestore(),paht));
+  }
   
   async getDocument(paht: string){
     return (await (getDoc(doc(getFirestore(), paht)))).data();
@@ -68,8 +76,18 @@ export class FirebaseService {
     })
   }
 
+  //usando almacenamiento de firebase
+
   getCollectionData(paht: string, collectionQuery?: any){ //? = no requerido
     const refDataBase = collection(getFirestore(),paht);
     return collectionData(query(refDataBase, collectionQuery), {idField:'id'});
+  }
+
+  async getFilePath(url: string){ //obtener ruta de la imagen para actualizarla en caso de que ususariop desee
+    return ref(getStorage(), url).fullPath
+  }
+
+  deleteFile(path: string){
+    return deleteObject(ref(getStorage(),path))
   }
 }

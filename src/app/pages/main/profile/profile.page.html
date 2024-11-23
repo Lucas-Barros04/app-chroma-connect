@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title routerLink="/main">{{nombreUsuario}}</ion-title>
+    <ion-title routerLink="/main">{{"@"+nombreUsuario}}</ion-title>
     <ion-buttons slot="end">
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
@@ -28,13 +28,43 @@
     style="border-radius: 50%; width: 20%;"
   />
   <div style="display: inline-block; margin: 0 0 0 30%;">
-    <p>post ?</p>
+    <p>post: {{postCount}}</p>
     <p>Seguidores ?</p>
     <p>Siguiendo ?</p>
   </div>
   <p style="margin-top: 2%;">Nombre apellido</p>
   <p>Bios:</p>
   <ion-button expand="block">Editar perfil</ion-button>
+
+  @for (photos of photos; track photos.id) {
+    <ion-card>
+      <img class="fotoSubida" alt="Silhouette of mountains" src="{{photos.imagen}}" />
+      <ion-card-header>
+        <ion-card-title>{{photos.name}}</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        {{photos.descripcion}}
+      </ion-card-content>
+      <div class="option-btn">
+        <ion-button  fill="clear" shape="round">
+          <ion-icon slot="start" name="thumbs-up-outline"></ion-icon> 2 
+        </ion-button>
+        <ion-button  fill="clear" shape="round">
+          <ion-icon slot="end" name="thumbs-down-outline"></ion-icon> 2
+        </ion-button> 
+        <ion-button slot="end" fill="clear" shape="round" (click)="addUpdatePhoto(photos)">
+          <ion-icon slot="end" name="create-outline"></ion-icon> 
+        </ion-button>
+        <ion-button fill="clear" slot="end" (click)="deletePhoto(photos)" >
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
+      <hr>
+    </ion-card>
+   
+  }
+  <!-- subir foto -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="uploadPhotos()">
       <ion-icon name="add"></ion-icon>

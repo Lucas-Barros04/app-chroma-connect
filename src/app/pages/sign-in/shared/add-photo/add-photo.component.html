@@ -1,4 +1,4 @@
-<app-header [isModal]="true" title="Subir foto"></app-header>
+<app-header [isModal]="true" [title]="photo ? 'Actualizar post' : 'Crear post'"></app-header>
 <ion-content>
   <div class="d-flex-center">
     <form [formGroup]="form" class="ion-padding ion-text-center" (ngSubmit)="submit()" >
@@ -40,7 +40,7 @@
       </ion-tab-button>
 
       <ion-button expand="block" type="submit" shape="round" class="submit" [disabled]="form.invalid">
-        Subir
+        {{photo ? 'Actualizar post' : 'Crear post'}}
       </ion-button>
 
     </form>

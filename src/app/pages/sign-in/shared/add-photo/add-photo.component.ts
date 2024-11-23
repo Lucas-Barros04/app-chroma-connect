@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
 import { User } from 'src/app/models/user.models';
+import { Photos } from 'src/app/models/photos.models';
 
 @Component({
   selector: 'app-add-photo',
@@ -10,8 +11,10 @@ import { User } from 'src/app/models/user.models';
   styleUrls: ['./add-photo.component.scss'],
 })
 export class AddPhotoComponent implements OnInit {
+  @Input() photo: Photos;
+
   form = new FormGroup({
-    id : new FormControl(''),
+    id: new FormControl(''),
     descripcion: new FormControl('', [
       Validators.required,
       Validators.minLength(1),
@@ -29,6 +32,7 @@ export class AddPhotoComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.utilidadesService.getLocalStorage('user');
+    if(this.photo) this.form.setValue(this.photo)
   }
 
   async takeImg() {
@@ -37,8 +41,15 @@ export class AddPhotoComponent implements OnInit {
     this.form.controls.imagen.setValue(dataUrl);
   }
 
-  async submit() {
+  submit() {
     if (this.form.valid) {
+      if (this.photo) this.updatePhoto();
+      else this.createPhoto();
+    }
+  }
+
+  async createPhoto() {
+    
       let path = `users/${this.user.uid}/galery`;
 
       const loading = await this.utilidadesService.loading();
@@ -52,13 +63,12 @@ export class AddPhotoComponent implements OnInit {
 
       this.form.controls.imagen.setValue(imageUrl);
 
-      delete this.form.value.id
+      delete this.form.value.id;
 
       this.fireBaseService
         .addDocument(path, this.form.value)
         .then(async (res) => {
-
-          this.utilidadesService.closeModal({ success: true});
+          this.utilidadesService.closeModal({ success: true });
 
           this.utilidadesService.presentToast(
             'Se subio la foto con existo',
@@ -76,7 +86,50 @@ export class AddPhotoComponent implements OnInit {
         .finally(() => {
           loading.dismiss();
         });
-      
-    }
+    
   }
-}
+
+  async updatePhoto() {
+    
+      let path = `users/${this.user.uid}/galery/${this.photo.id}`;
+
+      const loading = await this.utilidadesService.loading();
+      await loading.present();
+      //si cambia imagen, subir nueva y obtener url
+      if (this.form.value.imagen !== this.photo.imagen) {
+        let dataUrl = this.form.value.imagen;
+
+        let imgPath = await this.fireBaseService.getFilePath(this.photo.imagen);
+
+        let imageUrl = await this.fireBaseService.uploadImg(imgPath, dataUrl);
+
+        this.form.controls.imagen.setValue(imageUrl);
+      }
+
+      delete this.form.value.id;
+
+      this.fireBaseService
+        .updateDocument(path, this.form.value)
+        .then(async (res) => {
+          this.utilidadesService.closeModal({ success: true });
+
+          this.utilidadesService.presentToast(
+            'Se actualizo el post con existo',
+            'success',
+            'check-circle-outline'
+          );
+        })
+        .catch((error) => {
+          this.utilidadesService.presentToast(
+            'Ocurrio un error al actualizar: ' + error,
+            'danger',
+            'alert-circle-outline'
+          );
+        })
+        .finally(() => {
+          loading.dismiss();
+        });
+    }
+
+  }
+
