@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { LoadingController, ToastController, ModalController, ModalOptions } from '@ionic/angular';
+import { LoadingController, ToastController, ModalController, ModalOptions, AlertController, AlertOptions } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
@@ -10,6 +10,7 @@ export class UtilidadesService {
 
   constructor(private toast: ToastController, private router: Router, private modalCtrl: ModalController) { }
   loadingCTRL = inject(LoadingController)
+  alertCTROL = inject(AlertController)
 
   
 
@@ -69,5 +70,12 @@ export class UtilidadesService {
 
   closeModal(data?: any ){
     return this.modalCtrl.dismiss(data)
+  }
+
+  //confirmar antes de realizar accion
+  async presentAlert(opts?: AlertOptions) {
+    const alert = await this.alertCTROL.create(opts);
+  
+    await alert.present();
   }
 }

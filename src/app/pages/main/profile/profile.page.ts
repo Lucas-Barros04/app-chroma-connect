@@ -12,6 +12,7 @@ import { Photos } from 'src/app/models/photos.models';
 })
 export class ProfilePage implements OnInit {
   nombreUsuario: string = '';
+  nombreApellido: string = '';
 
   photos: Photos[] = []; //hacer tipado para fotos(interfaze)
 
@@ -27,6 +28,7 @@ export class ProfilePage implements OnInit {
     if (usuarioString) {
       const usuario = JSON.parse(usuarioString);
       this.nombreUsuario = usuario.username;
+      this.nombreApellido = usuario.name;
     }
   }
 
@@ -73,6 +75,23 @@ export class ProfilePage implements OnInit {
     if (exitoso) {
       this.getGaleryPhotos;
     }
+  }
+
+  async confirmDeletePhoto(photo: Photos) {
+    this.utilService.presentAlert({
+      header: 'Eliminar producto',
+      subHeader: 'Subtitle',
+      message: '¿Deseas eliminar este producto permanentemente?',
+      buttons: [{
+        text: 'Cancelar'
+      },{
+        text: 'Aceptar',
+        handler: () =>{
+          this.deletePhoto(photo)
+        }
+      }]
+    });
+  
   }
 
 
