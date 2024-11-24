@@ -23,6 +23,7 @@ export class SignUpPage implements OnInit {
       Validators.pattern(/^\d{9}$/),
     ]),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    photoProfile: new FormControl('assets/icon/favicon.png')
   });
 
   constructor(

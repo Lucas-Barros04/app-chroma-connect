@@ -23,7 +23,7 @@
 
 <ion-content id="main-content" class="ion-padding">
   <img
-    src="https://github.com/Lucas-Barros04.png"
+    src="{{photoProfile}}"
     alt=""
     style="border-radius: 50%; width: 20%;"
   />
@@ -33,7 +33,10 @@
     <p>Siguiendo ?</p>
   </div>
   <p style="margin-top: 2%;">Nombre: {{nombreApellido}}</p>
-  <ion-button expand="block">Editar perfil</ion-button>
+  <hr>
+  <div class="blocke"></div>
+  <hr>
+  <hr>
 
   @for (photos of photos; track photos.id) {
     <ion-card>

@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail} from 'firebase/auth'
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { User } from '../models/user.models';
-import {getFirestore, setDoc, doc, getDoc, addDoc, collection, collectionData, query, updateDoc, deleteDoc} from '@angular/fire/firestore'
+import {getFirestore, setDoc, doc, getDoc, addDoc, collection, collectionData, query, updateDoc, deleteDoc, where} from '@angular/fire/firestore'
 import { UtilidadesService } from 'src/app/services/utilidades.service';
 import {AngularFireStorage} from '@angular/fire/compat/storage';
 import {getStorage, uploadString, ref, getDownloadURL, deleteObject} from 'firebase/storage'
@@ -74,6 +74,24 @@ export class FirebaseService {
     return uploadString(ref(getStorage(), path), data_url, 'data_url').then(()=>{
       return getDownloadURL(ref(getStorage(),path))
     })
+  }
+
+
+  
+  ///////////////////////////////////////////////
+  getUsersByUsername(searchText: string) {
+     
+    const path = 'users'; // ruta de la colección de usuarios en tu base de datos Firestore.
+    //Obtén una referencia a la colección desde Firestore.
+    const refDataBase = collection(getFirestore(), path);
+    //Crea una consulta para buscar usuarios según el "username".
+    const queryByUsername = query(
+      refDataBase,
+      where('username', '>=', searchText), // Filtra los usernames que sean mayores o iguales a "searchText".
+      where('username', '<=', searchText + '\uf8ff') // Filtra hasta los usernames que empiezan con "searchText" y asegura que incluya cualquier texto.
+    );
+    return collectionData(queryByUsername, { idField: 'id' });//obtener datos encontrados y mas el id
+    // El parámetro `{ idField: 'id' }` agrega el ID del documento a cada objeto devuelto.
   }
 
   //usando almacenamiento de firebase

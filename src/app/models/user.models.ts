@@ -5,4 +5,5 @@ export interface User{
     name: string;
     username: string;
     phone: string;
+    photoProfile: string
 }

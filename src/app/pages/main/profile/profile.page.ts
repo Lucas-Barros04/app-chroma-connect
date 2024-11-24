@@ -13,6 +13,7 @@ import { Photos } from 'src/app/models/photos.models';
 export class ProfilePage implements OnInit {
   nombreUsuario: string = '';
   nombreApellido: string = '';
+  photoProfile: string = '';
 
   photos: Photos[] = []; //hacer tipado para fotos(interfaze)
 
@@ -29,6 +30,7 @@ export class ProfilePage implements OnInit {
       const usuario = JSON.parse(usuarioString);
       this.nombreUsuario = usuario.username;
       this.nombreApellido = usuario.name;
+      this.photoProfile = usuario.photoProfile;
     }
   }
 
