@@ -1,0 +1,40 @@
+<app-header title="{{'@'+userData?.username}}" backButton="main/search"></app-header><!--? cuando el objeto este definido, funcionara-->
+
+<ion-content id="main-content" class="ion-padding">
+  <img 
+    src="{{userData?.photoProfile}}"
+    alt="foto usuario"
+    style="border-radius: 50%; width: 30%; margin: 10px 40px 10px 10px;"
+  />
+  <div style="display: inline-block;">
+    <p>post: {{postCount}}</p>
+    <p>Seguidores ?</p>
+    <p>Siguiendo ?</p>
+  </div>
+  <p style="margin-top: 2%;">Nombre: {{userData?.name}}</p>
+  <hr>
+  <div class="blocke"></div>
+  <hr>
+  <hr>
+  @for (photos of photos; track photos.id) {
+    <ion-card>
+      <img alt="Silhouette of mountains" src="{{photos.imagen}}" />
+      <ion-card-header>
+        <ion-card-title>{{photos.name}}</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+        {{photos.descripcion}}
+      </ion-card-content>
+      <div class="option-btn">
+        <ion-button  fill="clear" shape="round">
+          <ion-icon slot="start" name="thumbs-up-outline"></ion-icon> 2 
+        </ion-button>
+        <ion-button  fill="clear" shape="round">
+          <ion-icon slot="end" name="thumbs-down-outline"></ion-icon> 2
+        </ion-button>
+      </div>
+    </ion-card>
+  }
+  
+</ion-content>

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.models';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 
 @Component({
   selector: 'app-search',
@@ -12,7 +14,9 @@ export class SearchPage implements OnInit {
   searchText: string = ''; // Texto ingresado en el buscador
   users: any[] = []; // Resultados de la búsqueda
 
-  constructor(private firebaseService: FirebaseService) { }
+  constructor(private firebaseService: FirebaseService, private utilService: UtilidadesService) { }
+
+  router = inject(Router)
 
   ngOnInit() {
   }
@@ -34,9 +38,12 @@ export class SearchPage implements OnInit {
     })
   }
 
-  viewUserProfile(user: User): void {
-    console.log('Usuario seleccionado:', user);
-    // Navegar al perfil del usuario
-    // this.router.navigate(['/profile', user.id]); en proceso de creacion
+  async viewUserProfile(user: User): Promise<void> {
+    const loading = await this.utilService.loading(); // Obtiene el loader del servicio
+    await loading.present();
+
+    this.router.navigate(['main', 'user-profile', user.uid]).then(()=>{
+      loading.dismiss()
+    })
   }
 }

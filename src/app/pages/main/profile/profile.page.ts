@@ -60,7 +60,6 @@ export class ProfilePage implements OnInit {
 
     let sub = this.fireBase.getCollectionData(path).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.photos = res;
         this.postCount = res.length;
         sub.unsubscribe; //tener control de la peticion

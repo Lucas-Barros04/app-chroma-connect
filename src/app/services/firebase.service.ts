@@ -76,8 +76,6 @@ export class FirebaseService {
     })
   }
 
-
-  
   ///////////////////////////////////////////////
   getUsersByUsername(searchText: string) {
      
@@ -97,7 +95,7 @@ export class FirebaseService {
   //usando almacenamiento de firebase
 
   getCollectionData(paht: string, collectionQuery?: any){ //? = no requerido
-    const refDataBase = collection(getFirestore(),paht);
+    const refDataBase = collection(getFirestore(),paht); //obtener todos los datos de la ruta especificada
     return collectionData(query(refDataBase, collectionQuery), {idField:'id'});
   }
 
