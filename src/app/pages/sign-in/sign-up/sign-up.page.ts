@@ -75,7 +75,12 @@ export class SignUpPage implements OnInit {
         .setDocument(path, this.form.value)
         .then(async (res) => {
           this.utilidadesService.saveLocalStorage('user', this.form.value);
-          this.utilidadesService.routerLink('/main');
+          this.utilidadesService.routerLink('/sign-in');
+          this.utilidadesService.presentToast(
+            'Usuario creado exitosamente',
+            'primary',
+            'checkmark-circle-outline'
+          );
           this.form.reset;
         })
         .catch((error) => {

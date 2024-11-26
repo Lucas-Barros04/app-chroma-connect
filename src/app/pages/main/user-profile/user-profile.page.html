@@ -1,37 +1,45 @@
-<app-header title="{{'@'+userData?.username}}" backButton="main/search"></app-header><!--? cuando el objeto este definido, funcionara-->
+<app-header title="{{'@'+userData?.username}}"
+  backButton="main/search"></app-header><!--? cuando el objeto este definido, funcionara-->
 
 <ion-content id="main-content" class="ion-padding">
-  <img 
-    src="{{userData?.photoProfile}}"
-    alt="foto usuario"
-    style="border-radius: 50%; width: 30%; margin: 10px 40px 10px 10px;"
-  />
+  <img src="{{userData?.photoProfile}}" alt="foto usuario"
+    style="border-radius: 50%; width: 30%; margin: 10px 40px 10px 10px;" />
   <div style="display: inline-block;">
     <p>post: {{postCount}}</p>
-    <p>Seguidores ?</p>
-    <p>Siguiendo ?</p>
+    <p>Seguidores: {{followersCount}}</p>
+    <p>Siguiendo: {{followingCount}}</p>
   </div>
   <p style="margin-top: 2%;">Nombre: {{userData?.name}}</p>
+  @if (isFollowing) {
+  <ion-button (click)="unfollowUser()" shape="round">
+    Dejar de seguir
+  </ion-button>
+  }@else {
+    <ion-button (click)="followUser()" shape="round">
+      seguir
+    </ion-button>
+  }
+
   <hr>
   <div class="blocke"></div>
   <hr>
   <hr>
   @for (photos of photos; track photos.id) {
-    <ion-card>
-      <img alt="Silhouette of mountains" src="{{photos.imagen}}" />
-      <ion-card-header>
-        <ion-card-title>{{photos.name}}</ion-card-title>
-      </ion-card-header>
-    
-      <ion-card-content>
-        {{photos.descripcion}}
-      </ion-card-content>
-      <div class="option-btn">
-        <ion-button  fill="clear" shape="round" (click)="toggleLike(photos)">
-          <ion-icon slot="start" name="thumbs-up-outline"></ion-icon> {{photos.likes}}
-        </ion-button>
-      </div>
-    </ion-card>
+  <ion-card>
+    <img alt="Silhouette of mountains" src="{{photos.imagen}}" />
+    <ion-card-header>
+      <ion-card-title>{{photos.name}}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      {{photos.descripcion}}
+    </ion-card-content>
+    <div class="option-btn">
+      <ion-button fill="clear" shape="round" (click)="toggleLike(photos)">
+        <ion-icon slot="start" name="thumbs-up-outline"></ion-icon> {{photos.likes}}
+      </ion-button>
+    </div>
+  </ion-card>
   }
-  
+
 </ion-content>

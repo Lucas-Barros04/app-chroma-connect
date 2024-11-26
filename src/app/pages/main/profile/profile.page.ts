@@ -19,6 +19,10 @@ export class ProfilePage implements OnInit {
 
   postCount: number = 0;
 
+  followingCount: number = 0;
+
+  followersCount: number = 0;
+
   constructor(
     private fireBase: FirebaseService,
     private utilService: UtilidadesService
@@ -32,6 +36,24 @@ export class ProfilePage implements OnInit {
       this.nombreApellido = usuario.name;
       this.photoProfile = usuario.photoProfile;
     }
+
+    let pathFollowing = `users/${this.user().uid}/following`;
+
+    let sub = this.fireBase.getCollectionData(pathFollowing).subscribe({
+      next: (res: any) => {
+        this.followingCount = res.length;
+        sub.unsubscribe; //tener control de la peticion
+      },
+    });
+
+    let pathFollowers = `users/${this.user().uid}/followers`;
+
+    let sub2 = this.fireBase.getCollectionData(pathFollowers).subscribe({
+      next: (res: any) => {
+        this.followersCount = res.length;
+        sub.unsubscribe; //tener control de la peticion
+      },
+    });
   }
 
   signOut() {
@@ -66,6 +88,7 @@ export class ProfilePage implements OnInit {
       },
     });
   }
+
 
   async addUpdatePhoto(photo?: Photos) {
     //los signos de ? dicen que el parametro no es requerido
