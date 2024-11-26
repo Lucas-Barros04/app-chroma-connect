@@ -50,11 +50,8 @@
       </ion-card-content>
       <div class="option-btn">
         <ion-button  fill="clear" shape="round">
-          <ion-icon slot="start" name="thumbs-up-outline"></ion-icon> 2 
+          <ion-icon slot="start" name="thumbs-up-outline"></ion-icon> {{photos.likes}} 
         </ion-button>
-        <ion-button  fill="clear" shape="round">
-          <ion-icon slot="end" name="thumbs-down-outline"></ion-icon> 2
-        </ion-button> 
         <ion-button slot="end" fill="clear" shape="round" (click)="addUpdatePhoto(photos)">
           <ion-icon slot="end" name="create-outline"></ion-icon> 
         </ion-button>

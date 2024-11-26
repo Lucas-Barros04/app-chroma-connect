@@ -14,6 +14,7 @@ export class AddPhotoComponent implements OnInit {
   @Input() photo: Photos;
 
   form = new FormGroup({
+    likes: new FormControl(null),
     id: new FormControl(''),
     descripcion: new FormControl('', [
       Validators.required,
@@ -32,7 +33,7 @@ export class AddPhotoComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.utilidadesService.getLocalStorage('user');
-    if(this.photo) this.form.setValue(this.photo)
+    if(this.photo) this.form.setValue(this.photo);
   }
 
   async takeImg() {
@@ -69,11 +70,10 @@ export class AddPhotoComponent implements OnInit {
         .addDocument(path, this.form.value)
         .then(async (res) => {
           this.utilidadesService.closeModal({ success: true });
-
           this.utilidadesService.presentToast(
             'Se subio la foto con existo',
             'success',
-            'check-circle-outline'
+            'checkmark-circle-outline'
           );
         })
         .catch((error) => {

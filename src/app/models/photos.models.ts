@@ -1,7 +1,9 @@
 export interface Photos
     {
-        imagen: string
+        likes: number,
+        imagen: string,
         name: string,
         descripcion: string,
-        id: string
+        id: string,
+        likedBy: string[];
     }
