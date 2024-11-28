@@ -7,11 +7,14 @@ import {getFirestore, setDoc, doc, getDoc, addDoc, collection, collectionData, q
 import { UtilidadesService } from 'src/app/services/utilidades.service';
 import {AngularFireStorage} from '@angular/fire/compat/storage';
 import {getStorage, uploadString, ref, getDownloadURL, deleteObject} from 'firebase/storage'
+import { MenuController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
+
+  menuCtrl = inject(MenuController)
 
   auth = inject(AngularFireAuth);
 
@@ -35,7 +38,11 @@ export class FirebaseService {
   signOut(){
     getAuth().signOut();
     localStorage.removeItem('user')
+
+    this.menuCtrl.close();
+
     this.utilService.routerLink('/sign-in')
+    console.log('usuario removido')
   }
 
   //============actualizar user

@@ -29,14 +29,17 @@ export class ProfilePage implements OnInit {
   ) {}
 
   ngOnInit() {
-    const usuarioString = localStorage.getItem('user');
-    if (usuarioString) {
-      const usuario = JSON.parse(usuarioString);
-      this.nombreUsuario = usuario.username;
-      this.nombreApellido = usuario.name;
-      this.photoProfile = usuario.photoProfile;
-    }
 
+  }
+
+  pathUser(){
+    this.nombreUsuario = this.user().username
+    this.nombreApellido = this.user().name
+    this.photoProfile = this.user().photoProfile
+  }
+
+  pathFollowin(){
+    //usar la base de datos para el nombre apellido y la foto de perfil
     let pathFollowing = `users/${this.user().uid}/following`;
 
     let sub = this.fireBase.getCollectionData(pathFollowing).subscribe({
@@ -45,18 +48,24 @@ export class ProfilePage implements OnInit {
         sub.unsubscribe; //tener control de la peticion
       },
     });
+  }
 
+  pathFollower(){
     let pathFollowers = `users/${this.user().uid}/followers`;
 
-    let sub2 = this.fireBase.getCollectionData(pathFollowers).subscribe({
+     let sub2 = this.fireBase.getCollectionData(pathFollowers).subscribe({
       next: (res: any) => {
         this.followersCount = res.length;
-        sub.unsubscribe; //tener control de la peticion
+        sub2.unsubscribe; //tener control de la peticion
       },
     });
   }
+  
 
   signOut() {
+    this.nombreUsuario = '';
+    this.nombreApellido = '';
+    this.photoProfile = '';
     this.fireBase.signOut();
     localStorage.removeItem('user');
   }
@@ -73,7 +82,10 @@ export class ProfilePage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.getGaleryPhotos(); //ejecuta una funcion cada vez que el user entra en la pagina "profile"
+    this.getGaleryPhotos();
+    this.pathFollower(); //ejecuta una funcion cada vez que el user entra en la pagina "profile"
+    this.pathFollowin();
+    this.pathUser();
   }
 
   //obtener todas las fotos creadas y guardadas en firebase
@@ -88,6 +100,54 @@ export class ProfilePage implements OnInit {
       },
     });
   }
+
+    async updateProfilePhoto() {
+      let wait;
+      try {
+        
+        // Abrir cámara o galería
+        const imageBase64 = (await this.utilService.takePicture('Actualizar foto de perfil')).dataUrl;
+        
+        if (imageBase64 == null) {
+          this.utilService.presentToast(
+            'No se seleccionó ninguna imagen.',
+            'warning',
+            'alert-circle-outline'
+          );
+          return;
+        }
+        wait = await this.utilService.loading();
+        await wait.present();
+        // Subir imagen a Firebase Storage
+        const storagePath = `users/${this.user().uid}/profilePhoto.jpg`; // Ruta para la foto de perfil
+        const imageUrl = await this.fireBase.uploadImg(storagePath, imageBase64);
+    
+        // Actualizar el campo en Firestore
+        const userPath = `users/${this.user().uid}`;
+        await this.fireBase.updateDocument(userPath, { photoProfile: imageUrl })
+    
+        // Actualizar la imagen localmente
+        
+        this.photoProfile = imageUrl;
+    
+        // Mostrar mensaje de éxito
+        this.utilService.presentToast(
+          'Foto de perfil actualizada con éxito.',
+          'success',
+          'checkmark-circle-outline'
+        );
+        
+      } catch (error) {
+        console.error('Error al actualizar la foto de perfil:', error);
+        this.utilService.presentToast(
+          'Hubo un problema al actualizar la foto de perfil.',
+          'danger',
+          'close-circle-outline'
+        );
+      } finally{
+        wait.dismiss();
+      } 
+    }
 
 
   async addUpdatePhoto(photo?: Photos) {
