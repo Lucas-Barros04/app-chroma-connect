@@ -25,6 +25,7 @@ export class SignInPage implements OnInit {
 
     this.fireBaseService.signIn(this.form.value as User).then(res=> {
       console.log(res)
+      
       this.getUserInfo(res.user.uid)
     }).catch(error => {
       this.utilidadesService.presentToast(

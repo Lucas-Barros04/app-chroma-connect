@@ -25,6 +25,9 @@ export class FirebaseService {
   storage = inject(AngularFireStorage)
 
   //=======autenticacion
+  getAuth(){
+    return getAuth();
+  }
 
   signIn(user: User){
     return signInWithEmailAndPassword(getAuth(), user.email, user.password)

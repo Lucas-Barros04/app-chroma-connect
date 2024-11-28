@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { loginGuardGuard } from './guards/login-guard.guard';
+import { guardNoLoginGuard } from './guards/guard-no-login.guard';
 
 const routes: Routes = [
 
@@ -10,11 +12,11 @@ const routes: Routes = [
   },
   {
     path: 'sign-in',
-    loadChildren: () => import('./pages/sign-in/sign-in.module').then( m => m.SignInPageModule)
+    loadChildren: () => import('./pages/sign-in/sign-in.module').then( m => m.SignInPageModule),canActivate:[guardNoLoginGuard]
   },
   {
     path: 'main',
-    loadChildren: () => import('./pages/main/main.module').then( m => m.MainPageModule),
+    loadChildren: () => import('./pages/main/main.module').then( m => m.MainPageModule),canActivate:[loginGuardGuard]
   },
 
 ];
