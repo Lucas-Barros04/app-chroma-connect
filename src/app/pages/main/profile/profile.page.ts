@@ -41,11 +41,11 @@ export class ProfilePage implements OnInit {
   pathFollowin(){
     //usar la base de datos para el nombre apellido y la foto de perfil
     let pathFollowing = `users/${this.user().uid}/following`;
-
+  
     let sub = this.fireBase.getCollectionData(pathFollowing).subscribe({
       next: (res: any) => {
         this.followingCount = res.length;
-        sub.unsubscribe; //tener control de la peticion
+        sub.unsubscribe(); // Asegúrate de invocar el método unsubscribe correctamente
       },
     });
   }
@@ -56,7 +56,7 @@ export class ProfilePage implements OnInit {
      let sub2 = this.fireBase.getCollectionData(pathFollowers).subscribe({
       next: (res: any) => {
         this.followersCount = res.length;
-        sub2.unsubscribe; //tener control de la peticion
+        sub2.unsubscribe(); //tener control de la peticion
       },
     });
   }
@@ -96,7 +96,7 @@ export class ProfilePage implements OnInit {
       next: (res: any) => {
         this.photos = res;
         this.postCount = res.length;
-        sub.unsubscribe; //tener control de la peticion
+        sub.unsubscribe(); //tener control de la peticion
       },
     });
   }
