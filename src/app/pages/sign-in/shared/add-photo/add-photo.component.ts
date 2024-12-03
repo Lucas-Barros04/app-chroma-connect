@@ -15,6 +15,7 @@ export class AddPhotoComponent implements OnInit {
 
   form = new FormGroup({
     likes: new FormControl(null),
+    likedBy: new FormControl(null),
     id: new FormControl(''),
     descripcion: new FormControl('', [
       Validators.required,
