@@ -19,12 +19,18 @@ export class InputComponent  implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    if (this.type == 'password') this.isPassword = true;
+    if (this.type == 'password') {
+      this.isPassword = true;
+    }
   }
-
-  showOrHidePassword(){
-    this.hide = !this.hide
-    if(this.hide) this.type = 'password'
-    else this.type = 'text'
+  
+  showOrHidePassword() {
+    this.hide = !this.hide;
+    if (this.hide) {
+      this.type = 'password';
+    } else {
+      this.type = 'text';
+    }
   }
+  
 }
