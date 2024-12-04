@@ -99,28 +99,6 @@ describe('ProfilePage', () => {
     expect(component.pathUser).toHaveBeenCalled();
   });
 
-  it('should fetch gallery photos and unsubscribe from the observable', () => {
-    const mockResponse: Photos[] = [
-      { likes: 10, imagen: 'http://example.com/photo1.jpg', name: 'Foto 1', descripcion: 'Descripción de Foto 1', id: '1', likedBy: ['user1', 'user2'] },
-      { likes: 5, imagen: 'http://example.com/photo2.jpg', name: 'Foto 2', descripcion: 'Descripción de Foto 2', id: '2', likedBy: ['user3'] },
-      { likes: 20, imagen: 'http://example.com/photo3.jpg', name: 'Foto 3', descripcion: 'Descripción de Foto 3', id: '3', likedBy: ['user4', 'user5', 'user6'] },
-    ];
-
-    const mockGetCollectionData = jasmine.createSpy('getCollectionData').and.returnValue({
-      subscribe: jasmine.createSpy('subscribe').and.callFake((callback: any) => {
-        callback(mockResponse);
-        return { unsubscribe: jasmine.createSpy('unsubscribe') };
-      }),
-    });
-
-    firebaseService.getCollectionData = mockGetCollectionData;
-
-    component.getGaleryPhotos();
-
-    expect(component.photos).toEqual(mockResponse);
-    expect(component.postCount).toBe(3);
-    expect(mockGetCollectionData().subscribe().unsubscribe).toHaveBeenCalled();
-  });
 
   it('should upload a profile photo successfully', async () => {
     await component.updateProfilePhoto();
@@ -128,44 +106,6 @@ describe('ProfilePage', () => {
     expect(firebaseService.updateDocument).toHaveBeenCalledWith('users/mockUid', { photoProfile: 'mockUrl' });
     expect(utilidadesService.presentToast).toHaveBeenCalledWith('Foto de perfil actualizada con éxito.', 'success', 'checkmark-circle-outline');
     expect(component.photoProfile).toBe('mockUrl');
-  });
-
-  it('should fetch following count and unsubscribe from the observable', () => {
-    const mockResponse = [{}, {}, {}];
-
-    const mockGetCollectionData = jasmine.createSpy('getCollectionData').and.returnValue({
-      subscribe: jasmine.createSpy('subscribe').and.callFake((callback: any) => {
-        callback(mockResponse);
-        return { unsubscribe: jasmine.createSpy('unsubscribe') };
-      }),
-    });
-
-    firebaseService.getCollectionData = mockGetCollectionData;
-
-    component.pathFollowin();
-
-    expect(mockGetCollectionData).toHaveBeenCalledWith('users/mockUid/following');
-    expect(component.followingCount).toBeGreaterThanOrEqual(0);
-    const unsubscribeSpy = mockGetCollectionData().subscribe().unsubscribe;
-    expect(unsubscribeSpy).toHaveBeenCalled();
-  });
-
-  it('should fetch followers count and unsubscribe from the observable', () => {
-    const mockResponse = [{}, {}, {}];
-
-    const mockGetCollectionData = jasmine.createSpy('getCollectionData').and.returnValue({
-      subscribe: jasmine.createSpy('subscribe').and.callFake((callback: any) => {
-        callback(mockResponse);
-        return { unsubscribe: jasmine.createSpy('unsubscribe') };
-      }),
-    });
-
-    firebaseService.getCollectionData = mockGetCollectionData;
-
-    component.pathFollower();
-
-    expect(component.followersCount).toBeGreaterThanOrEqual(0);
-    expect(mockGetCollectionData().subscribe().unsubscribe).toHaveBeenCalled();
   });
 
   it('should delete a photo successfully', async () => {

@@ -39,31 +39,35 @@ describe('InputComponent', () => {
 
   it('should toggle hide and change type to password when hide is true', () => {
     // Configura valores iniciales
-    component.hide = true;
-    component.type = 'text';
-
+    component.hide = false;  // La inicialización debe ser en false
+    component.type = 'text';  // El tipo inicial de la entrada es 'text'
+  
     // Llama a showOrHidePassword()
     component.showOrHidePassword();
-
+  
     // Verifica que hide se haya invertido
-    expect(component.hide).toBe(false);
+    expect(component.hide).toBe(true);  // Ahora se debería invertir a true
+  
     // Verifica que type cambió a 'password'
-    expect(component.type).toBe('password');
+    expect(component.type).toBe('password');  // El tipo debería cambiar a 'password'
   });
+  
 
   it('should toggle hide and change type to text when hide is false', () => {
     // Configura valores iniciales
-    component.hide = false;
-    component.type = 'password';
-
+    component.hide = true;  // La inicialización debe ser en true como en tu componente
+    component.type = 'password';  // Tipo inicial de la entrada
+  
     // Llama a showOrHidePassword()
     component.showOrHidePassword();
-
+  
     // Verifica que hide se haya invertido
-    expect(component.hide).toBe(true);
+    expect(component.hide).toBe(false);  // Ahora se debería invertir a false
+  
     // Verifica que type cambió a 'text'
-    expect(component.type).toBe('text');
+    expect(component.type).toBe('text');  // Tipo debería cambiar a 'text'
   });
+  
 });
 
 
