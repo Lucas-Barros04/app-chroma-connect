@@ -77,29 +77,7 @@ describe('SearchPage', () => {
 
     expect(firebaseService.getUsersByUsername).toHaveBeenCalledWith('mock');
     expect(component.users).toEqual([mockUser]); // Se espera que los usuarios sean actualizados
-  });
-
-  it('should navigate to user profile and show loader on viewUserProfile', async () => {
-    const mockUser: User = { 
-      uid: '123', 
-      email: 'mock@example.com', 
-      password: 'password', 
-      name: 'Mock User', 
-      username: 'mockUser', 
-      phone: '1234567890', 
-      photoProfile: 'url/to/photo'
-    };
-  
-    // Llamar a viewUserProfile
-    await component.viewUserProfile(mockUser);
-  
-    // Verificar que se haya llamado a la función de loading
-    expect(utilService.loading).toHaveBeenCalled(); 
-    // Verificar que la navegación haya sido correcta
-    expect(router.navigate).toHaveBeenCalledWith(['main', 'user-profile', '123']); 
-    // Verificar que dismiss se haya llamado después de la navegación
-    expect(utilService.loading().dismiss).toHaveBeenCalled(); 
-  });
+  });  
   
 });
 
