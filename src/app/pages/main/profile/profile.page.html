@@ -61,6 +61,15 @@
         </ion-button>
       </div>
       <hr>
+      <div>
+        <p><strong>Comentarios:</strong></p>
+      <div *ngFor="let comment of comments[photos.id]">
+        <p>
+          <strong>{{comment.username}}:</strong>
+          {{comment.text}}
+        </p>
+      </div>
+      </div>
     </ion-card>
    
   }

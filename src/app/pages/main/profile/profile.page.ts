@@ -15,6 +15,7 @@ export class ProfilePage implements OnInit {
   nombreApellido: string = '';
   photoProfile: string = '';
 
+  comments: any[] = [];
   photos: Photos[] = []; //hacer tipado para fotos(interfaze)
 
   postCount: number = 0;
@@ -88,6 +89,21 @@ export class ProfilePage implements OnInit {
     this.pathUser();
   }
 
+  getComments(photoId: string) {
+    let pathComments = `users/${this.user().uid}/galery/${photoId}/comments`;
+
+    let sub = this.fireBase.getCollectionData(pathComments).subscribe({
+      next: (res: any) => {
+        // Guardamos los comentarios de la foto en la propiedad correspondiente
+        this.comments[photoId] = res;
+        sub.unsubscribe(); // Terminamos la suscripción después de recibir los datos
+      },
+      error: (err) => {
+        console.error('Error al obtener los comentarios:', err);
+      }
+    });
+  }
+
   //obtener todas las fotos creadas y guardadas en firebase
   getGaleryPhotos() {
     let path = `users/${this.user().uid}/galery`;
@@ -96,6 +112,12 @@ export class ProfilePage implements OnInit {
       next: (res: any) => {
         this.photos = res;
         this.postCount = res.length;
+
+        // Por cada foto, obtenemos los comentarios
+        this.photos.forEach(photo => {
+          this.getComments(photo.id);
+        });
+        
         sub.unsubscribe(); //tener control de la peticion
       },
     });

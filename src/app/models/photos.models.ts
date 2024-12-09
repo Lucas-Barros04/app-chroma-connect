@@ -6,4 +6,12 @@ export interface Photos
         descripcion: string,
         id: string,
         likedBy: string[];
+        comments?: Comment[];
+    }
+
+export interface Comment {
+    userId: string;
+    username: string;
+    text: string;
+    timestamp: Date;
     }

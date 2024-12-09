@@ -15,9 +15,9 @@
     Dejar de seguir
   </ion-button>
   }@else {
-    <ion-button (click)="followUser()" shape="round">
-      seguir
-    </ion-button>
+  <ion-button (click)="followUser()" shape="round">
+    seguir
+  </ion-button>
   }
 
   <hr>
@@ -38,6 +38,21 @@
       <ion-button fill="clear" shape="round" (click)="toggleLike(photos)">
         <ion-icon slot="start" name="thumbs-up-outline"></ion-icon> {{photos.likes}}
       </ion-button>
+    </div>
+    <div>
+      <p><strong>Comentarios:</strong></p>
+      <div *ngFor="let comment of photos.comments">
+        <p>
+          <strong>{{comment.username}}:</strong>
+          {{comment.text}}
+        </p>
+      </div>
+
+      <!-- Añadir un nuevo comentario -->
+      <form (submit)="addComment(photos, commentInput.value, commentInput)">
+        <ion-input #commentInput placeholder="Escribe un comentario"></ion-input>
+        <ion-button type="submit">Enviar</ion-button>
+      </form>
     </div>
   </ion-card>
   }

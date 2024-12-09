@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route } from '@angular/router';
-import { Photos } from 'src/app/models/photos.models';
+import { Comment, Photos } from 'src/app/models/photos.models';
 import { User } from 'src/app/models/user.models';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -10,7 +11,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   styleUrls: ['./user-profile.page.scss'],
 })
 export class UserProfilePage implements OnInit {
-
+  
   userId: string | null = null;
   userData: any;
   photos: Photos[] = []; 
@@ -19,12 +20,27 @@ export class UserProfilePage implements OnInit {
   isFollowing: boolean = false;
   followersCount: number = 0;
   followingCount: number = 0;
-  constructor(private route: ActivatedRoute, private firebaseService: FirebaseService) { }
+  nameUser: string = ''
+  constructor(private route: ActivatedRoute, private firebaseService: FirebaseService, private utilService: UtilidadesService
+
+  ) { }
+
 
   ngOnInit() {
      // Capturar el ID del usuario desde la URL
-     this.userId = this.route.snapshot.paramMap.get('id');
+     this.userId = this.route.snapshot.paramMap.get('id'); //
+     
      this.currentUserId = JSON.parse(localStorage.getItem('user')).uid; //obtener solo el id del user
+
+     if (this.userId) {
+      this.firebaseService.getDocument(`users/${this.userId}`).then((data: User) => {
+        this.userData = data;
+        console.log('userData:', this.userData);  // Verifica si los datos del usuario llegan correctamente
+        // Luego continuar con las fotos y demás información
+      }).catch(err => {
+        console.error('Error al obtener los datos del usuario:', err);  // Verifica si ocurre algún error
+      });
+    }
 
      if (this.userId && this.currentUserId) {
       // Verificar si ya sigue al usuario
@@ -38,21 +54,7 @@ export class UserProfilePage implements OnInit {
       });
     }
 
-     if (this.userId) {
-       // Obtener los datos del usuario desde Firebase
-       this.firebaseService.getDocument(`users/${this.userId}`).then((data: User) => {
-         this.userData = data;
-         //obtenemos las foto del usuario
-         let path = `users/${this.userId}/galery`;
-         let sub = this.firebaseService.getCollectionData(path).subscribe({
-          next: (res: any) => {
-            this.photos = res;
-            this.postCount = res.length;
-            sub.unsubscribe; //tener control de la peticion
-          },
-        });
-       });
-     }
+    
      //seguidores
      const followersPath = `users/${this.userId}/followers/`;
      let sub = this.firebaseService.getCollectionData(followersPath).subscribe({
@@ -71,6 +73,44 @@ export class UserProfilePage implements OnInit {
       },
     });
 
+  }
+
+  user(): User {
+    return this.utilService.getLocalStorage('user');
+  }
+
+  getComments(photo: Photos) {
+    if (!photo.id || !this.userId) return;
+
+    const commentsPath = `users/${this.userId}/galery/${photo.id}/comments`;
+    this.firebaseService.getCollectionData(commentsPath).subscribe({
+      next: (comments: Comment[]) => {
+        photo.comments = comments;
+      },
+      error: (err) => {
+        console.error('Error al obtener los comentarios:', err);
+      },
+    });
+  }
+
+  loadPhotos() {
+    if (this.userId) {
+      let path = `users/${this.userId}/galery`;
+      let sub = this.firebaseService.getCollectionData(path).subscribe({
+        next: (res: any) => {
+          this.photos = res;
+          this.postCount = res.length;
+          // Cargar los comentarios para cada foto
+          this.photos.forEach(photo => this.getComments(photo));
+          sub.unsubscribe();
+        },
+      });
+    }
+  }
+
+  ionViewWillEnter() {
+    this.loadPhotos();
+    
   }
   async toggleLike(photo: Photos) {
     if (!photo.id || !this.userId) return; //si vienen indefinidos o null no pasa
@@ -142,6 +182,29 @@ export class UserProfilePage implements OnInit {
     this.isFollowing = false;
     console.log('Dejaste de seguir a este usuario');
   }
-  
 
+  async addComment(photo: Photos, commentText: any, commentInput: any) {
+    if (!this.userId || !this.currentUserId || !photo.id || !commentText.trim()) return;
+  
+    const commentsPath = `users/${this.userId}/galery/${photo.id}/comments`;
+  
+    const comment: Comment = {
+      userId: this.currentUserId, // Asegúrate de que esto es el usuario que comenta
+      username: this.user().username || 'Anónimo', // Aquí debería ser el username del que está comentando
+      text: commentText,
+      timestamp: new Date(),
+    };
+    
+    // Guardar el comentario en Firebase
+    await this.firebaseService.addDocument(commentsPath, comment).then(() => {
+      // Agregar el comentario localmente para que se actualice en la vista
+      commentInput.value = '';
+      photo.comments = [...(photo.comments || []), comment];
+      console.log('Comentario agregado');
+    }).catch(err => {
+      console.error('Error al agregar comentario:', err);
+    });
+  }
+  
+  
 }
