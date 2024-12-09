@@ -21,6 +21,7 @@ export class UserProfilePage implements OnInit {
   followersCount: number = 0;
   followingCount: number = 0;
   nameUser: string = ''
+  notifications: any;
   constructor(private route: ActivatedRoute, private firebaseService: FirebaseService, private utilService: UtilidadesService
 
   ) { }
@@ -146,25 +147,40 @@ export class UserProfilePage implements OnInit {
   async followUser() {
     if (!this.userId || !this.currentUserId) return;
   
-    // Rutas de los documentos a seguir
     const followingPath = `users/${this.currentUserId}/following/${this.userId}`;
     const followersPath = `users/${this.userId}/followers/${this.currentUserId}`;
   
-    // Verificar si ya sigue al usuario
     const userFollowing = await this.firebaseService.getDocument(followingPath);
     if (!userFollowing) {
-      // Si no lo sigue, agregarlo (crear un documento en la subcolección)
+      // Agregar al usuario a la lista de "siguiendo"
       await this.firebaseService.setDocument(followingPath, { followed: true });
   
-      // Agregar al usuario a la lista de seguidores (crear un documento en la subcolección)
+      // Agregar al usuario a la lista de "seguidores"
       await this.firebaseService.setDocument(followersPath, { follower: true });
   
       this.isFollowing = true;
-      console.log('Ahora sigues a este usuario');
+  
+      // Crear una notificación para el usuario seguido
+      const notification = {
+        type: 'follow',
+        senderId: this.currentUserId,
+        senderUsername: this.user().username || 'Usuario Anónimo',
+        message: `${this.user().username || 'Usuario Anónimo'} te ha comenzado a siguiendo`,
+        timestamp: new Date(),
+      };
+  
+      // Guardar la notificación en Firestore
+      await this.firebaseService.addDocument(`users/${this.userId}/notifications`, notification);
+  
+      console.log('Notificación enviada al usuario seguido.');
     } else {
       console.log('Ya estás siguiendo a este usuario');
     }
   }
+
+  
+  
+  
   
   async unfollowUser() {
     if (!this.userId || !this.currentUserId) return;

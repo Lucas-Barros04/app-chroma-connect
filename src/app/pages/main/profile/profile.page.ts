@@ -18,7 +18,10 @@ export class ProfilePage implements OnInit {
   comments: any[] = [];
   photos: Photos[] = []; //hacer tipado para fotos(interfaze)
 
+  notifications: any;
   postCount: number = 0;
+
+  unreadNotificationsCount: number = 0;
 
   followingCount: number = 0;
 
@@ -87,6 +90,7 @@ export class ProfilePage implements OnInit {
     this.pathFollower(); //ejecuta una funcion cada vez que el user entra en la pagina "profile"
     this.pathFollowin();
     this.pathUser();
+    this.getNotifications();
   }
 
   getComments(photoId: string) {
@@ -231,4 +235,50 @@ export class ProfilePage implements OnInit {
         loading.dismiss();
       });
   }
+
+  getNotifications() {
+    let path = `users/${this.user().uid}/notifications`;
+  
+    let sub = this.fireBase.getCollectionData(path).subscribe({
+      next: (res: any) => {
+        this.notifications = res;
+        sub.unsubscribe();
+      },
+      error: (err) => {
+        console.error('Error al obtener las notificaciones:', err);
+      },
+    });
+  }
+
+  markAsRead(notificationId: string) {
+    let path = `users/${this.user().uid}/notifications/${notificationId}`;
+  
+    this.fireBase.updateDocument(path, { seen: true })
+      .then(() => {
+        this.notifications = this.notifications.map(notification => 
+          notification.id === notificationId ? { ...notification, seen: true } : notification
+        );
+        this.unreadNotificationsCount--;
+      })
+      .catch(err => {
+        console.error('Error al marcar como leída:', err);
+      });
+  }
+  
+  deleteNotification(notificationId: string) {
+    const path = `notifications/${notificationId}`; // Ruta de la notificación
+    this.fireBase.deleteDocument(path)
+      .then(() => {
+        // Aquí puedes actualizar el estado de la interfaz de usuario, por ejemplo:
+        this.notifications = this.notifications.filter(notification => notification.id !== notificationId);
+        this.utilService.presentToast('Notificación eliminada con éxito', 'success', 'checkmark-circle-outline');
+      })
+      .catch(error => {
+        console.error('Error al eliminar la notificación:', error);
+        this.utilService.presentToast('Hubo un problema al eliminar la notificación', 'danger', 'alert-circle-outline');
+      });
+  }
+  
+  
+  
 }

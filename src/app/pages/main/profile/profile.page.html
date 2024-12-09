@@ -13,10 +13,30 @@
       <ion-title>Opciones</ion-title>
     </ion-toolbar>
   </ion-header>
+
   <ion-content>
-    <ion-list>
+    <!-- Mostrar notificaciones -->
+    <ion-list>      
       <ion-item button routerLink="/main">Inicio</ion-item>
       <ion-item button (click)="signOut()">Cerrar sesión</ion-item>
+
+      <ion-item *ngIf="unreadNotificationsCount > 0">
+        <ion-label>
+          <strong>¡Tienes {{ unreadNotificationsCount }} notificaciones nuevas!</strong>
+        </ion-label>
+      </ion-item>
+
+      <!-- Listar notificaciones -->
+      <ion-item *ngFor="let notification of notifications" (click)="markAsRead(notification.id)">
+        <ion-label>
+          <b>{{notification.message}}</b>
+          <ion-badge *ngIf="!notification.seen" color="danger">Nuevo</ion-badge>
+        </ion-label>
+        <ion-button fill="clear" color="danger" (click)="deleteNotification(notification.id)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
     </ion-list>
   </ion-content>
 </ion-menu>
