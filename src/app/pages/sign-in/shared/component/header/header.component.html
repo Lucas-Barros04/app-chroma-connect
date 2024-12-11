@@ -1,12 +1,12 @@
 <ion-header>
   
-  <ion-toolbar color="danger">
+  <ion-toolbar color="tertiary">
 
     <ion-buttons slot="start">
       <ion-back-button *ngIf="backButton" [defaultHref]="backButton"></ion-back-button>
     </ion-buttons>
 
-    <ion-button (click)=" closeModal()" *ngIf="isModal" color="danger" slot="end">
+    <ion-button (click)=" closeModal()" *ngIf="isModal" color="tertiary" slot="start">
       <ion-icon name="close-circle-outline"></ion-icon>
     </ion-button>
 

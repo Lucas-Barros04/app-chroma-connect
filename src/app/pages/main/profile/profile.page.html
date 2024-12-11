@@ -1,5 +1,8 @@
-<ion-header>
-  <ion-toolbar>
+<ion-header >
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main"></ion-back-button>
+    </ion-buttons>
     <ion-title routerLink="/main">{{"@"+nombreUsuario}}</ion-title>
     <ion-buttons slot="end">
       <ion-menu-button autoHide="false"></ion-menu-button>
@@ -9,7 +12,7 @@
 
 <ion-menu side="end" contentId="main-content">
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="warning">
       <ion-title>Opciones</ion-title>
     </ion-toolbar>
   </ion-header>
@@ -18,7 +21,7 @@
     <!-- Mostrar notificaciones -->
     <ion-list>      
       <ion-item button routerLink="/main">Inicio</ion-item>
-      <ion-item button (click)="signOut()">Cerrar sesión</ion-item>
+      <ion-item button (click)="confirmsignOut() ">Cerrar sesión</ion-item>
 
       <ion-item *ngIf="unreadNotificationsCount > 0">
         <ion-label>

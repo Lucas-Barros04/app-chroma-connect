@@ -74,6 +74,22 @@ export class ProfilePage implements OnInit {
     localStorage.removeItem('user');
   }
 
+  async confirmsignOut() {
+    this.utilService.presentAlert({
+      header: '¿Deseas cerrar sesión?',
+      message: `¿Estás seguro que deseas cerrar sesión? ${this.user().username}`,
+      buttons: [{
+        text: 'Cancelar'
+      },{
+        text: 'Aceptar',
+        handler: () =>{
+          this.signOut()
+        }
+      }]
+    });
+  
+  }
+
   //subir fotos
   uploadPhotos() {
     this.utilService.presentModal({
@@ -203,7 +219,6 @@ export class ProfilePage implements OnInit {
     });
   
   }
-
 
   async deletePhoto(photo: Photos) {
     let path = `users/${this.user().uid}/galery/${photo.id}`;
