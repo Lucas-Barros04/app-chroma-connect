@@ -199,7 +199,7 @@ export class ProfilePage implements OnInit {
       componentProps: { photo },
     });
     if (exitoso) {
-      this.getGaleryPhotos;
+      this.getGaleryPhotos();
     }
   }
 

@@ -11,7 +11,7 @@ import { User } from 'src/app/models/user.models';
 })
 export class SignInPage implements OnInit {
   form = new FormGroup({
-    email : new FormControl('',[Validators.required, Validators.email]),
+    email : new FormControl('',[Validators.required, Validators.email,this.emailDuocValidator()]),
     password : new FormControl('', [Validators.required])
   })
   constructor(private fireBaseService: FirebaseService, private utilidadesService: UtilidadesService ) { }
@@ -44,6 +44,15 @@ export class SignInPage implements OnInit {
       'alert-circle-outline'
     )
     console.log(error);
+  }
+  emailDuocValidator() {
+    return (control: FormControl) => {
+      const email = control.value;
+      if (email && !email.endsWith('@duocuc.cl')) {
+        return { invalidEmailDomain: true }; // Error específico
+      }
+      return null; // Validación correcta
+    };
   }
 
   async getUserInfo(uid: string) {

@@ -16,6 +16,7 @@
       <div class="validators" *ngIf="form.controls.email.errors && form.controls.email.touched">
         <div *ngIf="form.controls.email.errors?.['required']">El correo es requerido</div>
         <div *ngIf="form.controls.email.errors?.['email']">Ingrese un correo válido</div>
+        <div *ngIf="form.controls.email.errors?.['invalidEmailDomain']">El correo debe terminar en duocuc.cl</div>
       </div>
       
       <app-input icon="lock-closed-outline" 

@@ -12,7 +12,7 @@ import { UtilidadesService } from 'src/app/services/utilidades.service';
 export class SignUpPage implements OnInit {
   form = new FormGroup({
     uid: new FormControl(''),
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [Validators.required, Validators.email, this.emailDuocValidator()]),
     password: new FormControl('', [Validators.required]),
     username: new FormControl('', [
       Validators.required,
@@ -20,7 +20,8 @@ export class SignUpPage implements OnInit {
     ]),
     phone: new FormControl('', [
       Validators.required,
-      Validators.pattern(/^\d{9}$/),
+      Validators.pattern(/^\d{8}$/),
+      Validators.maxLength(8),
     ]),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
     photoProfile: new FormControl('assets/icon/favicon.png')
@@ -61,6 +62,16 @@ export class SignUpPage implements OnInit {
           loading.dismiss();
         });
     }
+  }
+
+  emailDuocValidator() {
+    return (control: FormControl) => {
+      const email = control.value;
+      if (email && !email.endsWith('@duocuc.cl')) {
+        return { invalidEmailDomain: true }; // Error específico
+      }
+      return null; // Validación correcta
+    };
   }
 
   async setUserInfo(uid: string) {
